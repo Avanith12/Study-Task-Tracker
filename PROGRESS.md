@@ -9,8 +9,8 @@ merged.
 | 1. Project setup | Orchestrator | Merged | milestone/01-project-setup | [#1](https://github.com/Avanith12/Study-Task-Tracker/pull/1) | Merged |
 | 2. Page skeleton | UI Worker | Merged | milestone/02-page-skeleton | [#2](https://github.com/Avanith12/Study-Task-Tracker/pull/2) | Merged |
 | 3. Add and display | Logic Worker | Merged | milestone/03-add-display | [#3](https://github.com/Avanith12/Study-Task-Tracker/pull/3) | Merged |
-| 4. Complete and delete | Logic Worker | Ready for review | milestone/04-complete-delete | [open PR](https://github.com/Avanith12/Study-Task-Tracker/pull/new/milestone/04-complete-delete) | Verified |
-| 5. Save tasks | Logic Worker | Not started | milestone/05-persistence | — | — |
+| 4. Complete and delete | Logic Worker | Merged | milestone/04-complete-delete | [#4](https://github.com/Avanith12/Study-Task-Tracker/pull/4) | Merged |
+| 5. Save tasks | Logic Worker | Ready for review | milestone/05-persistence | [open PR](https://github.com/Avanith12/Study-Task-Tracker/pull/new/milestone/05-persistence) | Verified |
 | 6. Deadline indicators | Logic Worker | Not started | milestone/06-deadlines | — | — |
 | 7. Polished interface | UI Worker | Not started | milestone/07-interface | — | — |
 | 8. Final verification | Orchestrator | Not started | milestone/08-final-verification | — | — |
@@ -23,9 +23,9 @@ reported by the orchestrator.
 
 ## Notes
 
-- Milestones 1–3 are merged (PRs #1–#3).
-- Milestone 4 implements in-memory complete/reopen/delete; persistence is
-  milestone 5 and overdue indicators are milestone 6.
+- Milestones 1–4 are merged (PRs #1–#4).
+- Milestone 5 implements localStorage persistence; overdue indicators are
+  milestone 6.
 - Worktrees remain: Logic Worker `herdr_projects-logic`, UI Worker
   `herdr_projects-ui`.
 
@@ -90,3 +90,27 @@ reported by the orchestrator.
 - Logic Worker's milestone 3 regression harness still passed 29/29.
 - Not performed: manual GUI click/keyboard interaction by the user.
 - Commit: `83f6af6`.
+
+### Milestone 5 — Save tasks
+
+- `app.js` persists to the exact key `study-task-tracker:v1` as a JSON
+  array of `{ id, title, deadline, completed }` and saves after every
+  add, complete, reopen, and delete.
+- Load-time validation keeps only nonempty-string `id`/`title`,
+  `YYYY-MM-DD` deadline, and boolean `completed`; invalid entries are
+  dropped and malformed JSON/non-arrays fall back to an empty list
+  without throwing.
+- Storage access (property, `getItem`, `setItem`) is guarded; on failure a
+  persistent warning is shown in `#app-message` and the warning is restored
+  after normal messages clear. All actions still work in memory.
+- Orchestrator verified in real Chrome over HTTP across separate page loads
+  (shared profile): add/complete/delete persisted with correct record shape;
+  simulated refresh restored order and completion and kept deletions;
+  malformed JSON loaded empty then accepted a valid add; mixed data kept only
+  the trimmed valid entry; blocked storage showed the warning, still added in
+  memory, and restored the warning after a successful add. All six scenarios
+  matched expectations, no crashes.
+- Logic Worker's fake-DOM storage harness passed 34/34; M3 (29/29) and M4
+  (21/21) regressions still pass.
+- Not performed: manual GUI reload/quota testing by the user.
+- Commit: `9c79fb8`.

@@ -1,12 +1,17 @@
 // Study Task Tracker — application logic.
-// Milestone 4: add, complete/reopen, and delete tasks (in-memory only).
-// Persistence and overdue logic are added in later milestones.
+// Milestone 5: add, complete/reopen, delete, and persist tasks.
+// Overdue logic is added in a later milestone.
 
 (function () {
   "use strict";
 
+  var STORAGE_KEY = "study-task-tracker:v1";
+  var STORAGE_UNAVAILABLE_MESSAGE =
+    "Tasks cannot be saved in this browser. Changes will be lost when you close the page.";
+
   // In-memory task collection. Insertion order is preserved.
   var tasks = [];
+  var storageUnavailable = false;
 
   var form = document.getElementById("task-form");
   var titleInput = document.getElementById("task-title");
@@ -28,6 +33,98 @@
 
   function setMessage(text) {
     appMessage.textContent = text;
+  }
+
+  // Keep the storage warning visible whenever no other message is showing.
+  function clearMessage() {
+    setMessage(storageUnavailable ? STORAGE_UNAVAILABLE_MESSAGE : "");
+  }
+
+  function markStorageUnavailable() {
+    storageUnavailable = true;
+    setMessage(STORAGE_UNAVAILABLE_MESSAGE);
+  }
+
+  function getStorage() {
+    try {
+      return window.localStorage || null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function isValidTask(entry) {
+    return (
+      entry !== null &&
+      typeof entry === "object" &&
+      !Array.isArray(entry) &&
+      typeof entry.id === "string" &&
+      entry.id !== "" &&
+      typeof entry.title === "string" &&
+      entry.title.trim() !== "" &&
+      typeof entry.deadline === "string" &&
+      /^\d{4}-\d{2}-\d{2}$/.test(entry.deadline) &&
+      typeof entry.completed === "boolean"
+    );
+  }
+
+  function loadTasks() {
+    var storage = getStorage();
+    if (!storage) {
+      markStorageUnavailable();
+      return [];
+    }
+
+    var raw;
+    try {
+      raw = storage.getItem(STORAGE_KEY);
+    } catch (error) {
+      markStorageUnavailable();
+      return [];
+    }
+
+    if (raw === null || raw === undefined) {
+      return [];
+    }
+
+    var parsed;
+    try {
+      parsed = JSON.parse(raw);
+    } catch (error) {
+      // Corrupted JSON: start clean without crashing.
+      return [];
+    }
+
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+
+    var loaded = [];
+    for (var i = 0; i < parsed.length; i += 1) {
+      var entry = parsed[i];
+      if (isValidTask(entry)) {
+        loaded.push({
+          id: entry.id,
+          title: entry.title.trim(),
+          deadline: entry.deadline,
+          completed: entry.completed
+        });
+      }
+    }
+    return loaded;
+  }
+
+  function saveTasks() {
+    var storage = getStorage();
+    if (!storage) {
+      markStorageUnavailable();
+      return;
+    }
+    try {
+      storage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+    } catch (error) {
+      markStorageUnavailable();
+    }
   }
 
   function createTask(title, deadline) {
@@ -107,6 +204,7 @@
       return;
     }
     task.completed = !task.completed;
+    saveTasks();
     renderTasks();
   }
 
@@ -114,6 +212,7 @@
     for (var i = 0; i < tasks.length; i += 1) {
       if (tasks[i].id === id) {
         tasks.splice(i, 1);
+        saveTasks();
         renderTasks();
         return;
       }
@@ -158,10 +257,12 @@
     }
 
     tasks.push(createTask(title, deadline));
-    setMessage("");
+    saveTasks();
+    clearMessage();
     form.reset();
     renderTasks();
   });
 
+  tasks = loadTasks();
   renderTasks();
 })();
