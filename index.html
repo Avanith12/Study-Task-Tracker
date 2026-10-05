@@ -10,6 +10,20 @@
   <header class="app-header">
     <h1>Study Task Tracker</h1>
     <p class="app-intro">Track assignments and deadlines, and see what is overdue.</p>
+
+    <section class="status-legend" aria-label="Task status guide">
+      <h2 class="status-legend-heading">Status guide</h2>
+      <ul>
+        <li>
+          <span class="legend-badge legend-badge--completed" aria-hidden="true">✓ Completed</span>
+          Title is struck through and the deadline shows a &ldquo;Completed&rdquo; badge.
+        </li>
+        <li>
+          <span class="legend-badge legend-badge--overdue" aria-hidden="true">⚠ Overdue</span>
+          The deadline is before today and the task is not completed.
+        </li>
+      </ul>
+    </section>
   </header>
 
   <main class="app-main">
