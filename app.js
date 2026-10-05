@@ -1,6 +1,5 @@
 // Study Task Tracker — application logic.
-// Milestone 5: add, complete/reopen, delete, and persist tasks.
-// Overdue logic is added in a later milestone.
+// Milestone 6: add, complete/reopen, delete, persist, and flag overdue tasks.
 
 (function () {
   "use strict";
@@ -127,6 +126,22 @@
     }
   }
 
+  // Today's local calendar date as YYYY-MM-DD. Built from local date parts
+  // (not toISOString) so there is no UTC conversion or timezone shift.
+  function getTodayString() {
+    var now = new Date();
+    var month = String(now.getMonth() + 1).padStart(2, "0");
+    var day = String(now.getDate()).padStart(2, "0");
+    return now.getFullYear() + "-" + month + "-" + day;
+  }
+
+  // A task is overdue only when it is incomplete and its deadline is
+  // earlier than today's local calendar date. Deadlines are YYYY-MM-DD,
+  // so direct string comparison is a valid calendar comparison.
+  function isOverdue(task) {
+    return !task.completed && task.deadline < getTodayString();
+  }
+
   function createTask(title, deadline) {
     return {
       id: createId(),
@@ -143,6 +158,10 @@
 
     if (task.completed) {
       item.classList.add("is-completed");
+    }
+
+    if (isOverdue(task)) {
+      item.classList.add("is-overdue");
     }
 
     var title = document.createElement("span");
