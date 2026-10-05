@@ -7,8 +7,8 @@ merged.
 | Milestone | Owner | Status | Branch | PR | Verification |
 |-----------|-------|--------|--------|----|--------------|
 | 1. Project setup | Orchestrator | Merged | milestone/01-project-setup | [#1](https://github.com/Avanith12/Study-Task-Tracker/pull/1) | Merged |
-| 2. Page skeleton | UI Worker | Ready for review | milestone/02-page-skeleton | [open PR](https://github.com/Avanith12/Study-Task-Tracker/pull/new/milestone/02-page-skeleton) | Verified |
-| 3. Add and display | Logic Worker | Not started | milestone/03-add-display | — | — |
+| 2. Page skeleton | UI Worker | Merged | milestone/02-page-skeleton | [#2](https://github.com/Avanith12/Study-Task-Tracker/pull/2) | Merged |
+| 3. Add and display | Logic Worker | Ready for review | milestone/03-add-display | [open PR](https://github.com/Avanith12/Study-Task-Tracker/pull/new/milestone/03-add-display) | Verified |
 | 4. Complete and delete | Logic Worker | Not started | milestone/04-complete-delete | — | — |
 | 5. Save tasks | Logic Worker | Not started | milestone/05-persistence | — | — |
 | 6. Deadline indicators | Logic Worker | Not started | milestone/06-deadlines | — | — |
@@ -23,9 +23,9 @@ reported by the orchestrator.
 
 ## Notes
 
-- Milestone 1 is merged (PR #1).
-- Milestone 2 creates the static page skeleton only; application logic
-  begins in milestone 3.
+- Milestones 1 and 2 are merged (PRs #1 and #2).
+- Milestone 3 implements in-memory add and display only; persistence is
+  milestone 5 and complete/delete actions are milestone 4.
 - Worktrees remain: Logic Worker `herdr_projects-logic`, UI Worker
   `herdr_projects-ui`.
 
@@ -56,3 +56,20 @@ reported by the orchestrator.
   headless DOM render. Interactive and responsive checks are deferred to
   milestone 7.
 - Commit: `70fcea4`.
+
+### Milestone 3 — Add and display
+
+- `app.js` implements an in-memory task array (insertion order kept) and an
+  `#task-form` submit handler.
+- Validation rejects empty/whitespace-only titles and missing deadlines and
+  writes a message to `#app-message`; messages clear on success.
+- Tasks render as `li.task-item` with `.task-title` (via `textContent`),
+  `.task-deadline`, and a `.task-actions` container holding real
+  `.task-toggle` and `.task-delete` buttons (behaviors deferred to M4).
+- `#empty-state` is hidden when tasks exist and shown when none.
+- Orchestrator ran a real headless Chrome harness against the byte-identical
+  logic: 19/19 checks passed, including HTML-in-title escaped as text,
+  whitespace title rejection, missing deadline rejection, insertion order,
+  and no `is-overdue`/`is-completed` leakage. No console/runtime errors.
+- Not performed: manual GUI interaction by the user.
+- Commit: `388abb7`.
