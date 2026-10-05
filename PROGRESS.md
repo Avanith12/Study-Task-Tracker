@@ -8,8 +8,8 @@ merged.
 |-----------|-------|--------|--------|----|--------------|
 | 1. Project setup | Orchestrator | Merged | milestone/01-project-setup | [#1](https://github.com/Avanith12/Study-Task-Tracker/pull/1) | Merged |
 | 2. Page skeleton | UI Worker | Merged | milestone/02-page-skeleton | [#2](https://github.com/Avanith12/Study-Task-Tracker/pull/2) | Merged |
-| 3. Add and display | Logic Worker | Ready for review | milestone/03-add-display | [open PR](https://github.com/Avanith12/Study-Task-Tracker/pull/new/milestone/03-add-display) | Verified |
-| 4. Complete and delete | Logic Worker | Not started | milestone/04-complete-delete | — | — |
+| 3. Add and display | Logic Worker | Merged | milestone/03-add-display | [#3](https://github.com/Avanith12/Study-Task-Tracker/pull/3) | Merged |
+| 4. Complete and delete | Logic Worker | Ready for review | milestone/04-complete-delete | [open PR](https://github.com/Avanith12/Study-Task-Tracker/pull/new/milestone/04-complete-delete) | Verified |
 | 5. Save tasks | Logic Worker | Not started | milestone/05-persistence | — | — |
 | 6. Deadline indicators | Logic Worker | Not started | milestone/06-deadlines | — | — |
 | 7. Polished interface | UI Worker | Not started | milestone/07-interface | — | — |
@@ -23,9 +23,9 @@ reported by the orchestrator.
 
 ## Notes
 
-- Milestones 1 and 2 are merged (PRs #1 and #2).
-- Milestone 3 implements in-memory add and display only; persistence is
-  milestone 5 and complete/delete actions are milestone 4.
+- Milestones 1–3 are merged (PRs #1–#3).
+- Milestone 4 implements in-memory complete/reopen/delete; persistence is
+  milestone 5 and overdue indicators are milestone 6.
 - Worktrees remain: Logic Worker `herdr_projects-logic`, UI Worker
   `herdr_projects-ui`.
 
@@ -73,3 +73,20 @@ reported by the orchestrator.
   and no `is-overdue`/`is-completed` leakage. No console/runtime errors.
 - Not performed: manual GUI interaction by the user.
 - Commit: `388abb7`.
+
+### Milestone 4 — Complete and delete
+
+- `app.js` adds delegated click handling on `#task-list`; actions resolve
+  the task by its `data-id` (never by DOM index).
+- `.task-toggle` completes/reopens the targeted task, toggles it
+  `is-completed` on the `.task-item` only, and switches its label between
+  "Complete" and "Reopen".
+- `.task-delete` removes exactly the targeted task and re-renders;
+  deleting the last task restores `#empty-state`.
+- Still no `localStorage` (M5) and no overdue logic (M6).
+- Orchestrator ran a real headless Chrome harness: 16/16 checks passed,
+  including completing the middle of three tasks, reopen, order/state
+  preservation across deletes, and empty-state restoration. No runtime errors.
+- Logic Worker's milestone 3 regression harness still passed 29/29.
+- Not performed: manual GUI click/keyboard interaction by the user.
+- Commit: `83f6af6`.
