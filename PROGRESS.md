@@ -6,7 +6,7 @@ merged.
 
 | Milestone | Owner | Status | Branch | PR | Verification |
 |-----------|-------|--------|--------|----|--------------|
-| 1. Project setup | Orchestrator | Ready for review | milestone/01-project-setup | — | — |
+| 1. Project setup | Orchestrator | Ready for review | milestone/01-project-setup | [open PR](https://github.com/Avanith12/Study-Task-Tracker/pull/new/milestone/01-project-setup) | Verified |
 | 2. Page skeleton | UI Worker | Not started | milestone/02-page-skeleton | — | — |
 | 3. Add and display | Logic Worker | Not started | milestone/03-add-display | — | — |
 | 4. Complete and delete | Logic Worker | Not started | milestone/04-complete-delete | — | — |
@@ -38,3 +38,6 @@ reported by the orchestrator.
 - `PROGRESS.md` lists all eight milestones.
 - Separate worktrees exist for the Logic Worker and UI Worker.
 - Manual browser checks: not applicable to this milestone (no app code yet).
+- Tooling note: no GitHub CLI or API token was available, so the PR was not
+  opened programmatically. The branch is pushed and the PR-creation link
+  above can be used to open it.
