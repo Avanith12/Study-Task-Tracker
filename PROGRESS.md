@@ -10,8 +10,8 @@ merged.
 | 2. Page skeleton | UI Worker | Merged | milestone/02-page-skeleton | [#2](https://github.com/Avanith12/Study-Task-Tracker/pull/2) | Merged |
 | 3. Add and display | Logic Worker | Merged | milestone/03-add-display | [#3](https://github.com/Avanith12/Study-Task-Tracker/pull/3) | Merged |
 | 4. Complete and delete | Logic Worker | Merged | milestone/04-complete-delete | [#4](https://github.com/Avanith12/Study-Task-Tracker/pull/4) | Merged |
-| 5. Save tasks | Logic Worker | Ready for review | milestone/05-persistence | [open PR](https://github.com/Avanith12/Study-Task-Tracker/pull/new/milestone/05-persistence) | Verified |
-| 6. Deadline indicators | Logic Worker | Not started | milestone/06-deadlines | — | — |
+| 5. Save tasks | Logic Worker | Merged | milestone/05-persistence | [#5](https://github.com/Avanith12/Study-Task-Tracker/pull/5) | Merged |
+| 6. Deadline indicators | Logic Worker | Ready for review | milestone/06-deadlines | [open PR](https://github.com/Avanith12/Study-Task-Tracker/pull/new/milestone/06-deadlines) | Verified |
 | 7. Polished interface | UI Worker | Not started | milestone/07-interface | — | — |
 | 8. Final verification | Orchestrator | Not started | milestone/08-final-verification | — | — |
 
@@ -23,9 +23,9 @@ reported by the orchestrator.
 
 ## Notes
 
-- Milestones 1–4 are merged (PRs #1–#4).
-- Milestone 5 implements localStorage persistence; overdue indicators are
-  milestone 6.
+- Milestones 1–5 are merged (PRs #1–#5).
+- Milestone 6 implements overdue indicators; the polished interface is
+  milestone 7.
 - Worktrees remain: Logic Worker `herdr_projects-logic`, UI Worker
   `herdr_projects-ui`.
 
@@ -114,3 +114,20 @@ reported by the orchestrator.
   (21/21) regressions still pass.
 - Not performed: manual GUI reload/quota testing by the user.
 - Commit: `9c79fb8`.
+
+### Milestone 6 — Deadline indicators
+
+- `app.js` builds "today" from local date parts
+  (`getFullYear`/`getMonth`/`getDate`, zero-padded) with no `toISOString`
+  or UTC conversion, and marks a task overdue only when it is incomplete
+  and `deadline < today`.
+- `is-overdue` is applied to the `li.task-item` only, recomputed on every
+  render so complete/reopen updates it immediately.
+- Orchestrator verified in real Chrome with a fixed local date of
+  2025-06-15: 15/15 checks passed — yesterday incomplete overdue; today and
+  future not overdue; past completed not overdue; deadline text unshifted;
+  completing an overdue task removes `is-overdue`; reopening restores it.
+- Logic Worker's fixed-Date fake-DOM harness passed 15/15; M3 (29/29),
+  M4 (21/21), and M5 (34/34) regressions still pass.
+- Not performed: manual browser testing across real timezones/midnight.
+- Commit: `0229bb0`.
