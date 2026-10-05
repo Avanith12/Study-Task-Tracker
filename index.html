@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Task Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="app-header">
+    <h1>Study Task Tracker</h1>
+    <p class="app-intro">Track assignments and deadlines, and see what is overdue.</p>
+  </header>
+
+  <main class="app-main">
+    <form id="task-form" novalidate>
+      <div class="field">
+        <label for="task-title">Task title</label>
+        <input
+          type="text"
+          id="task-title"
+          name="title"
+          placeholder="e.g. Finish reading chapter 4"
+          autocomplete="off"
+          required>
+      </div>
+
+      <div class="field">
+        <label for="task-deadline">Deadline</label>
+        <input
+          type="date"
+          id="task-deadline"
+          name="deadline"
+          required>
+      </div>
+
+      <button type="submit" id="task-submit">Add task</button>
+    </form>
+
+    <p id="app-message" role="status" aria-live="polite"></p>
+
+    <section class="tasks" aria-labelledby="tasks-heading">
+      <h2 id="tasks-heading">Tasks</h2>
+      <p id="empty-state">No tasks yet. Add one above to get started.</p>
+      <ul id="task-list"></ul>
+    </section>
+  </main>
+
+  <script defer src="app.js"></script>
+</body>
+</html>
