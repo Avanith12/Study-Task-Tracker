@@ -1,5 +1,5 @@
 // Study Task Tracker — application logic.
-// Milestone 6: add, complete/reopen, delete, persist, and flag overdue tasks.
+// Study Task Tracker logic, including input hardening and safe loading.
 
 (function () {
   "use strict";
@@ -7,6 +7,8 @@
   var STORAGE_KEY = "study-task-tracker:v1";
   var STORAGE_UNAVAILABLE_MESSAGE =
     "Tasks cannot be saved in this browser. Changes will be lost when you close the page.";
+  var TITLE_MAX_LENGTH = 200;
+  var MAX_LOADED_TASKS = 500;
 
   // In-memory task collection. Insertion order is preserved.
   var tasks = [];
@@ -52,6 +54,30 @@
     }
   }
 
+  function isLeapYear(year) {
+    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+  }
+
+  // True only for a YYYY-MM-DD string that is a real calendar date
+  // (month 01-12 and a day that exists in that month, leap years included).
+  function isValidDateString(value) {
+    if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      return false;
+    }
+    var year = Number(value.slice(0, 4));
+    var month = Number(value.slice(5, 7));
+    var day = Number(value.slice(8, 10));
+    if (month < 1 || month > 12) {
+      return false;
+    }
+    var daysInMonth = [
+      31,
+      isLeapYear(year) ? 29 : 28,
+      31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+    ];
+    return day >= 1 && day <= daysInMonth[month - 1];
+  }
+
   function isValidTask(entry) {
     return (
       entry !== null &&
@@ -61,8 +87,7 @@
       entry.id !== "" &&
       typeof entry.title === "string" &&
       entry.title.trim() !== "" &&
-      typeof entry.deadline === "string" &&
-      /^\d{4}-\d{2}-\d{2}$/.test(entry.deadline) &&
+      isValidDateString(entry.deadline) &&
       typeof entry.completed === "boolean"
     );
   }
@@ -99,16 +124,23 @@
     }
 
     var loaded = [];
-    for (var i = 0; i < parsed.length; i += 1) {
+    var seenIds = Object.create(null);
+    for (var i = 0; i < parsed.length && loaded.length < MAX_LOADED_TASKS; i += 1) {
       var entry = parsed[i];
-      if (isValidTask(entry)) {
-        loaded.push({
-          id: entry.id,
-          title: entry.title.trim(),
-          deadline: entry.deadline,
-          completed: entry.completed
-        });
+      if (!isValidTask(entry)) {
+        continue;
       }
+      if (seenIds[entry.id]) {
+        // Keep the first occurrence of each id so actions stay unambiguous.
+        continue;
+      }
+      seenIds[entry.id] = true;
+      loaded.push({
+        id: entry.id,
+        title: entry.title.trim(),
+        deadline: entry.deadline,
+        completed: entry.completed
+      });
     }
     return loaded;
   }
@@ -265,6 +297,12 @@
 
     if (!title) {
       setMessage("Please enter a task title.");
+      titleInput.focus();
+      return;
+    }
+
+    if (title.length > TITLE_MAX_LENGTH) {
+      setMessage("Task titles must be " + TITLE_MAX_LENGTH + " characters or fewer.");
       titleInput.focus();
       return;
     }
