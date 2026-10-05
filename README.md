@@ -35,7 +35,8 @@ Then open <http://localhost:8000/> in your browser.
 ## How to use
 
 1. Type a title and pick a deadline, then select **Add task**.
-   Empty or whitespace-only titles and missing deadlines are rejected.
+   Empty or whitespace-only titles, titles longer than 200 characters, and
+   missing or invalid calendar deadlines are rejected. You can keep up to 500 tasks.
 2. Select **Complete** on a task to mark it done; select **Reopen** to make
    it active again.
 3. Select **Delete** to remove a task.
@@ -56,8 +57,15 @@ relying on color alone.
 - Deadlines are treated as local calendar dates with no timezone conversion.
 - If `localStorage` is unavailable, the app stays usable in memory and shows
   a clear message that changes cannot be saved.
-- Malformed or partially invalid saved data does not crash the app; invalid
-  entries are ignored.
+- Malformed, oversized, duplicated, or partially invalid saved data does not
+  crash the app. Valid entries can still be used in memory, but saving is
+  paused with a warning to preserve the original saved data.
+- To recover from that warning, first back up the raw value of
+  `study-task-tracker:v1` using your browser developer tools. Repair that JSON
+  or remove that specific key, then reload. Removing the key deletes the saved
+  tasks; changes made while saving is paused are not persisted.
+- Saved input is bounded to 1,048,576 UTF-16 characters before JSON parsing.
+  See [SECURITY.md](SECURITY.md) for review findings and limits.
 
 ## Project files
 

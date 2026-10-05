@@ -13,7 +13,7 @@ merged.
 | 5. Save tasks | Logic Worker | Merged | milestone/05-persistence | [#5](https://github.com/Avanith12/Study-Task-Tracker/pull/5) | Merged |
 | 6. Deadline indicators | Logic Worker | Merged | milestone/06-deadlines | [#6](https://github.com/Avanith12/Study-Task-Tracker/pull/6) | Merged |
 | 7. Polished interface | UI Worker | Merged | milestone/07-interface | [#7](https://github.com/Avanith12/Study-Task-Tracker/pull/7) | Merged |
-| 8. Final verification | Orchestrator | Ready for review | milestone/08-final-verification | [open PR](https://github.com/Avanith12/Study-Task-Tracker/pull/new/milestone/08-final-verification) | Verified |
+| 8. Final verification | Orchestrator | Merged | milestone/08-final-verification | [#8](https://github.com/Avanith12/Study-Task-Tracker/pull/8) | Verified; merge confirmed in main history (`f32e3bc`) |
 
 Allowed statuses: Not started, In progress, Ready for review, Merged,
 Blocked.
@@ -223,3 +223,35 @@ Verification on the combined app (real headless Chromium, CSP active):
 
 Limitations: no manual human GUI/screen-reader pass, no cross-browser testing
 beyond Chromium, and no automated test runner was added.
+
+
+## Additional UI improvement and security review — 2026-10-05
+
+Owner: Orchestrator coordinating exactly two workers, Logic Worker and UI Worker.
+Status: Ready for review.
+Branch: `improvement/ui-security-review`.
+PR: not opened (GitHub CLI and API token unavailable).
+[Create review PR](https://github.com/Avanith12/Study-Task-Tracker/compare/main...improvement/ui-security-review?expand=1).
+No merge performed.
+
+- UI Worker: calmer dark workspace, mint accents, clear creation/task cards,
+  compact guide below the main workflow, improved empty state, responsive
+  layout, keyboard focus, 48px controls, real status labels and local favicon.
+  Tightened CSP without adding external assets or dependencies.
+- Logic Worker: validate submitted real dates and loaded title limits; enforce
+  task/raw-storage/ID bounds; preserve rejected original storage rather than
+  silently overwriting it; real status text and focus restoration.
+- Orchestrator: integrated worker commits sequentially by fast-forward,
+  reviewed code and populated screenshots, corrected milestone 8's stale
+  merge status, and updated running/storage/security documentation.
+- Verification: 33/33 real Chrome integrated checks and 47 focused worker
+  assertions passed. Add, complete, reopen, delete, refresh, local-date
+  overdue checks, submitted/stored XSS payloads, malformed/blocked storage,
+  preservation and bounds passed. No normal-operation console/runtime errors.
+  No horizontal overflow at 320/390/1100px; keyboard order/focus and long
+  titles verified. Direct-file launch passed. Syntax/whitespace checks passed.
+- Limits: no cross-browser or human screen-reader pass; no comprehensive
+  historical secret scan or independent penetration test. Damaged storage
+  requires manual backup/repair/removal before saving resumes. See SECURITY.md.
+- GitHub CLI is unavailable. If PR creation remains unavailable, the pushed
+  branch will be accompanied by an exact compare link for user submission.

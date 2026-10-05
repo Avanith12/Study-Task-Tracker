@@ -2,67 +2,64 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; frame-src 'none'; worker-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
   <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080b0a">
   <title>Study Task Tracker</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="app-header">
-    <h1>Study Task Tracker</h1>
-    <p class="app-intro">Track assignments and deadlines, and see what is overdue.</p>
-  </header>
+  <a class="skip-link" href="#task-title">Skip to add a task</a>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">✓</span> STUDY TASK TRACKER</div>
+      <p class="eyebrow">YOUR STUDY SPACE</p>
+      <h1>A little structure.<br>A clearer mind.</h1>
+      <p class="app-intro">Keep your assignments in one place. Take them one task at a time.</p>
+    </header>
 
-  <section class="status-legend" aria-label="Task status guide">
-    <h2 class="status-legend-heading">Status guide</h2>
-    <ul>
-      <li>
-        <span class="legend-badge legend-badge--completed" aria-hidden="true">✓ Completed</span>
-        Title is struck through and the deadline shows a &ldquo;Completed&rdquo; badge.
-      </li>
-      <li>
-        <span class="legend-badge legend-badge--overdue" aria-hidden="true">⚠ Overdue</span>
-        The deadline is before today and the task is not completed.
-      </li>
-    </ul>
-  </section>
+    <main class="app-main">
+      <section class="creation-card" aria-labelledby="create-heading">
+        <div class="section-heading">
+          <span class="section-icon" aria-hidden="true">+</span>
+          <div><h2 id="create-heading">What's next?</h2><p>Add an assignment and give it a deadline.</p></div>
+        </div>
+        <form id="task-form" novalidate>
+          <div class="field">
+            <label for="task-title">Task title</label>
+            <input type="text" id="task-title" name="title" placeholder="e.g. Finish reading chapter 4" autocomplete="off" maxlength="200" required>
+          </div>
+          <div class="field">
+            <label for="task-deadline">Deadline</label>
+            <input type="date" id="task-deadline" name="deadline" required>
+          </div>
+          <button type="submit" id="task-submit"><span aria-hidden="true">+</span> Add task</button>
+        </form>
+        <p id="app-message" role="status" aria-live="polite" aria-atomic="true"></p>
+      </section>
 
-  <main class="app-main">
-    <form id="task-form" novalidate>
-      <div class="field">
-        <label for="task-title">Task title</label>
-        <input
-          type="text"
-          id="task-title"
-          name="title"
-          placeholder="e.g. Finish reading chapter 4"
-          autocomplete="off"
-          maxlength="200"
-          required>
-      </div>
+      <section class="tasks" aria-labelledby="tasks-heading">
+        <div class="task-section-heading"><h2 id="tasks-heading">Your tasks</h2><p>Small steps, steady progress.</p></div>
+        <div id="empty-state">
+          <span class="empty-mark" aria-hidden="true">✓</span>
+          <h3>A fresh start.</h3>
+          <p>No tasks yet. Add your first assignment above.</p>
+        </div>
+        <ul id="task-list"></ul>
+      </section>
 
-      <div class="field">
-        <label for="task-deadline">Deadline</label>
-        <input
-          type="date"
-          id="task-deadline"
-          name="deadline"
-          required>
-      </div>
-
-      <button type="submit" id="task-submit">Add task</button>
-    </form>
-
-    <p id="app-message" role="status" aria-live="polite"></p>
-
-    <section class="tasks" aria-labelledby="tasks-heading">
-      <h2 id="tasks-heading">Tasks</h2>
-      <p id="empty-state">No tasks yet. Add one above to get started.</p>
-      <ul id="task-list"></ul>
-    </section>
-  </main>
-
+      <section class="status-legend" aria-labelledby="guide-heading">
+        <h2 id="guide-heading">A quick guide</h2>
+        <ul>
+          <li><span class="legend-badge legend-badge--overdue">Overdue</span><span>Past its deadline and still incomplete.</span></li>
+          <li><span class="legend-badge legend-badge--completed">Completed</span><span>Done for now. Reopen whenever you need.</span></li>
+        </ul>
+      </section>
+    </main>
+    <footer class="app-footer"><span class="footer-dot" aria-hidden="true"></span> Your tasks stay in this browser when storage is available.</footer>
+  </div>
   <script defer src="app.js"></script>
 </body>
 </html>
