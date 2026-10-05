@@ -189,3 +189,37 @@ Limitations / not performed:
   browser harnesses and worker suites (M3 29/29, M4 21/21, M5 34/34,
   M6 15/15, M7 UI-worker checks).
 - Data remains local to the browser; clearing storage removes tasks.
+
+## Post-milestone improvements (UI aesthetics + hardening)
+
+Branch: `improvement/ui-and-hardening` (combines the UI Worker's
+`improvement/ui-aesthetics` and the Logic Worker's
+`improvement/logic-hardening`).
+
+Delivered:
+
+- UI aesthetics: gradient hero, refined palette/typography/spacing, polished
+  cards, buttons, empty state with a CSS-only icon, non-color status cues,
+  responsive layout, visible focus, automatic dark mode
+  (`prefers-color-scheme`), and reduced-motion support. `app.js` unchanged by
+  the UI Worker.
+- Hardening: title cap (200 chars), real calendar-date validation on load
+  (leap years handled), bounded load (500 tasks), duplicate-id de-duplication,
+  plus a Content-Security-Policy and no-referrer meta. See `SECURITY.md`.
+
+Verification on the combined app (real headless Chromium, CSP active):
+
+- Full workflow: add, validation, complete/reopen, delete, overdue, and HTML
+  title escaping all passed; refresh preserved tasks, order, completion, and
+  overdue; deleting all restored the empty state.
+- Hardening: 200-char title accepted / 201 rejected; impossible dates dropped
+  and `2024-02-29` accepted; 600 stored tasks loaded as the first 500;
+  duplicate ids de-duplicated; malformed and blocked storage handled.
+- Security: XSS payload rendered as literal text with no injected nodes or
+  globals; no CSP violations and no console errors.
+- Layout: no horizontal overflow at 320px or 1100px; single-column form/card
+  on narrow screens; long titles wrap; dark mode activates; badges, focus
+  outline, and status legend present.
+
+Limitations: no manual human GUI/screen-reader pass, no cross-browser testing
+beyond Chromium, and no automated test runner was added.
