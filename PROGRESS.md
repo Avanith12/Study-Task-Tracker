@@ -11,8 +11,8 @@ merged.
 | 3. Add and display | Logic Worker | Merged | milestone/03-add-display | [#3](https://github.com/Avanith12/Study-Task-Tracker/pull/3) | Merged |
 | 4. Complete and delete | Logic Worker | Merged | milestone/04-complete-delete | [#4](https://github.com/Avanith12/Study-Task-Tracker/pull/4) | Merged |
 | 5. Save tasks | Logic Worker | Merged | milestone/05-persistence | [#5](https://github.com/Avanith12/Study-Task-Tracker/pull/5) | Merged |
-| 6. Deadline indicators | Logic Worker | Ready for review | milestone/06-deadlines | [open PR](https://github.com/Avanith12/Study-Task-Tracker/pull/new/milestone/06-deadlines) | Verified |
-| 7. Polished interface | UI Worker | Not started | milestone/07-interface | — | — |
+| 6. Deadline indicators | Logic Worker | Merged | milestone/06-deadlines | [#6](https://github.com/Avanith12/Study-Task-Tracker/pull/6) | Merged |
+| 7. Polished interface | UI Worker | Ready for review | milestone/07-interface | [open PR](https://github.com/Avanith12/Study-Task-Tracker/pull/new/milestone/07-interface) | Verified |
 | 8. Final verification | Orchestrator | Not started | milestone/08-final-verification | — | — |
 
 Allowed statuses: Not started, In progress, Ready for review, Merged,
@@ -23,9 +23,8 @@ reported by the orchestrator.
 
 ## Notes
 
-- Milestones 1–5 are merged (PRs #1–#5).
-- Milestone 6 implements overdue indicators; the polished interface is
-  milestone 7.
+- Milestones 1–6 are merged (PRs #1–#6).
+- Milestone 7 polishes the interface; final verification is milestone 8.
 - Worktrees remain: Logic Worker `herdr_projects-logic`, UI Worker
   `herdr_projects-ui`.
 
@@ -131,3 +130,22 @@ reported by the orchestrator.
   M4 (21/21), and M5 (34/34) regressions still pass.
 - Not performed: manual browser testing across real timezones/midnight.
 - Commit: `0229bb0`.
+
+### Milestone 7 — Polished interface
+
+- `index.html` adds a "Status guide" legend explaining Completed/Overdue;
+  all agreed IDs/classes and `<script defer src="app.js">` are preserved.
+- `style.css` rewritten: coherent palette/typography/spacing, distinct
+  completed and overdue styling with non-color cues (strikethrough, text
+  badges via `::after` "✓ Completed"/"⚠ Overdue"), responsive layout,
+  visible `:focus-visible` outlines, and a distinct `#app-message` alert box.
+- `app.js` unchanged; the milestone diff is limited to `index.html` and
+  `style.css`.
+- Orchestrator verified in real Chrome at 320, 480, 768, and 1100px widths:
+  no horizontal overflow at any width; form and task card stack to a single
+  column at 320/480px and use multi-column at 768/1100px; long unbroken
+  titles wrap without breaking layout; `is-completed` shows strikethrough and
+  "✓ Completed", `is-overdue` shows "⚠ Overdue"; `:focus-visible` yields a
+  solid 3px outline; the status legend is present.
+- Not performed: real-device/human visual review and manual keyboard tabbing.
+- Commit: `6647792`.
