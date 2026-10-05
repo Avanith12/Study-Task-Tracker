@@ -131,6 +131,7 @@ The Logic Worker creates li elements with class task-item.
 Use these classes:
 - task-title
 - task-deadline
+- task-status (real text: Completed, Overdue, Due today, or Upcoming)
 - task-actions
 - task-toggle
 - task-delete
