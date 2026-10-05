@@ -1,6 +1,6 @@
 // Study Task Tracker — application logic.
-// Milestone 3: add and display tasks (in-memory only).
-// Persistence is added in a later milestone.
+// Milestone 4: add, complete/reopen, and delete tasks (in-memory only).
+// Persistence and overdue logic are added in later milestones.
 
 (function () {
   "use strict";
@@ -91,6 +91,53 @@
     }
     updateEmptyState();
   }
+
+  function findTaskById(id) {
+    for (var i = 0; i < tasks.length; i += 1) {
+      if (tasks[i].id === id) {
+        return tasks[i];
+      }
+    }
+    return null;
+  }
+
+  function toggleTask(id) {
+    var task = findTaskById(id);
+    if (!task) {
+      return;
+    }
+    task.completed = !task.completed;
+    renderTasks();
+  }
+
+  function deleteTask(id) {
+    for (var i = 0; i < tasks.length; i += 1) {
+      if (tasks[i].id === id) {
+        tasks.splice(i, 1);
+        renderTasks();
+        return;
+      }
+    }
+  }
+
+  // Delegated so actions resolve by task id from the nearest .task-item,
+  // never by DOM index.
+  taskList.addEventListener("click", function (event) {
+    var target = event.target;
+    if (!target || typeof target.closest !== "function") {
+      return;
+    }
+    var item = target.closest(".task-item");
+    if (!item) {
+      return;
+    }
+    var id = item.getAttribute("data-id");
+    if (target.closest(".task-toggle")) {
+      toggleTask(id);
+    } else if (target.closest(".task-delete")) {
+      deleteTask(id);
+    }
+  });
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();
