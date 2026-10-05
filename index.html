@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Study Task Tracker</title>
   <link rel="stylesheet" href="style.css">
@@ -10,21 +12,21 @@
   <header class="app-header">
     <h1>Study Task Tracker</h1>
     <p class="app-intro">Track assignments and deadlines, and see what is overdue.</p>
-
-    <section class="status-legend" aria-label="Task status guide">
-      <h2 class="status-legend-heading">Status guide</h2>
-      <ul>
-        <li>
-          <span class="legend-badge legend-badge--completed" aria-hidden="true">✓ Completed</span>
-          Title is struck through and the deadline shows a &ldquo;Completed&rdquo; badge.
-        </li>
-        <li>
-          <span class="legend-badge legend-badge--overdue" aria-hidden="true">⚠ Overdue</span>
-          The deadline is before today and the task is not completed.
-        </li>
-      </ul>
-    </section>
   </header>
+
+  <section class="status-legend" aria-label="Task status guide">
+    <h2 class="status-legend-heading">Status guide</h2>
+    <ul>
+      <li>
+        <span class="legend-badge legend-badge--completed" aria-hidden="true">✓ Completed</span>
+        Title is struck through and the deadline shows a &ldquo;Completed&rdquo; badge.
+      </li>
+      <li>
+        <span class="legend-badge legend-badge--overdue" aria-hidden="true">⚠ Overdue</span>
+        The deadline is before today and the task is not completed.
+      </li>
+    </ul>
+  </section>
 
   <main class="app-main">
     <form id="task-form" novalidate>
@@ -36,6 +38,7 @@
           name="title"
           placeholder="e.g. Finish reading chapter 4"
           autocomplete="off"
+          maxlength="200"
           required>
       </div>
 
