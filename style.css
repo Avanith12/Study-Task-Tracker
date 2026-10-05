@@ -2,55 +2,55 @@
    Styles the markup contract from AGENTS.md section 4. No application logic. */
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 
-  --color-text: #0f172a;
-  --color-muted: #475569;
-  --color-border: #e2e8f0;
-  --color-surface: #ffffff;
-  --color-background: #eef2f7;
+  --color-text: #e2e8f0;
+  --color-muted: #94a3b8;
+  --color-border: #334155;
+  --color-surface: #1e293b;
+  --color-background: #000000;
 
-  --color-accent: #4f46e5;
-  --color-accent-strong: #4338ca;
-  --color-accent-soft: #eef2ff;
-  --color-accent-soft-hover: #e0e7ff;
-  --color-accent-border: #c7d2fe;
-  --color-accent-text: #3730a3;
+  --color-accent: #818cf8;
+  --color-accent-strong: #a5b4fc;
+  --color-accent-soft: #312e81;
+  --color-accent-soft-hover: #3730a3;
+  --color-accent-border: #6366f1;
+  --color-accent-text: #c7d2fe;
 
-  --color-message-bg: #eef2ff;
-  --color-message-text: #312e81;
-  --color-message-border: #4f46e5;
+  --color-message-bg: #1e1b4b;
+  --color-message-text: #dbeafe;
+  --color-message-border: #818cf8;
 
-  --color-danger: #dc2626;
-  --color-danger-strong: #b91c1c;
-  --color-danger-soft: #fef2f2;
-  --color-danger-soft-hover: #fee2e2;
-  --color-danger-border: #fca5a5;
-  --color-danger-text: #991b1b;
+  --color-danger: #f87171;
+  --color-danger-strong: #fca5a5;
+  --color-danger-soft: #3f1d1d;
+  --color-danger-soft-hover: #4c2020;
+  --color-danger-border: #b91c1c;
+  --color-danger-text: #fecaca;
 
-  --color-completed-bg: #f1f5f9;
-  --color-completed-border: #cbd5e1;
-  --color-completed-text: #334155;
+  --color-completed-bg: #263449;
+  --color-completed-border: #475569;
+  --color-completed-text: #e2e8f0;
 
-  --color-overdue-bg: #fff1f2;
-  --color-overdue-border: #fda4af;
-  --color-overdue-text: #9f1239;
+  --color-overdue-bg: #3b1518;
+  --color-overdue-border: #b91c1c;
+  --color-overdue-text: #fecaca;
 
-  --color-focus: #4f46e5;
+  --color-focus: #a5b4fc;
 
   --submit-bg: #4f46e5;
-  --submit-bg-2: #7c3aed;
+  --submit-bg-2: #6d28d9;
   --submit-text: #ffffff;
 
-  --hero-from: #4f46e5;
-  --hero-via: #7c3aed;
-  --hero-to: #9333ea;
+  --hero-from: #4338ca;
+  --hero-via: #6d28d9;
+  --hero-to: #7e22ce;
 
   --radius: 0.9rem;
   --radius-sm: 0.6rem;
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
-  --shadow-md: 0 1px 2px rgba(15, 23, 42, 0.05), 0 10px 28px -18px rgba(15, 23, 42, 0.4);
-  --shadow-hero: 0 14px 30px -18px rgba(79, 70, 229, 0.75);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 1px 2px rgba(0, 0, 0, 0.4), 0 10px 28px -18px rgba(0, 0, 0, 0.9);
+  --shadow-hero: 0 14px 30px -18px rgba(0, 0, 0, 0.9);
   --transition: 0.18s ease;
 
   --empty-icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'><rect x='4' y='3' width='16' height='18' rx='2'/><path d='M9 3h6v4H9z'/><path d='M8 12l2.5 2.5L16 9'/></svg>");
@@ -64,7 +64,7 @@
     --color-muted: #94a3b8;
     --color-border: #334155;
     --color-surface: #1e293b;
-    --color-background: #0f172a;
+    --color-background: #000000;
 
     --color-accent: #818cf8;
     --color-accent-strong: #a5b4fc;
