@@ -12,8 +12,8 @@ merged.
 | 4. Complete and delete | Logic Worker | Merged | milestone/04-complete-delete | [#4](https://github.com/Avanith12/Study-Task-Tracker/pull/4) | Merged |
 | 5. Save tasks | Logic Worker | Merged | milestone/05-persistence | [#5](https://github.com/Avanith12/Study-Task-Tracker/pull/5) | Merged |
 | 6. Deadline indicators | Logic Worker | Merged | milestone/06-deadlines | [#6](https://github.com/Avanith12/Study-Task-Tracker/pull/6) | Merged |
-| 7. Polished interface | UI Worker | Ready for review | milestone/07-interface | [open PR](https://github.com/Avanith12/Study-Task-Tracker/pull/new/milestone/07-interface) | Verified |
-| 8. Final verification | Orchestrator | Not started | milestone/08-final-verification | — | — |
+| 7. Polished interface | UI Worker | Merged | milestone/07-interface | [#7](https://github.com/Avanith12/Study-Task-Tracker/pull/7) | Merged |
+| 8. Final verification | Orchestrator | Ready for review | milestone/08-final-verification | [open PR](https://github.com/Avanith12/Study-Task-Tracker/pull/new/milestone/08-final-verification) | Verified |
 
 Allowed statuses: Not started, In progress, Ready for review, Merged,
 Blocked.
@@ -149,3 +149,43 @@ reported by the orchestrator.
   solid 3px outline; the status legend is present.
 - Not performed: real-device/human visual review and manual keyboard tabbing.
 - Commit: `6647792`.
+
+### Milestone 8 — Final verification
+
+No code fixes were required; the merged app behaved correctly in end-to-end
+checks. Changes in this milestone are documentation only (`README.md`,
+`PROGRESS.md`).
+
+End-to-end workflow (real Chrome over HTTP, fresh profile, then a second
+page load to simulate refresh):
+
+- Empty state visible initially; empty/whitespace title and missing deadline
+  rejected with a message.
+- Added tasks due yesterday/today/tomorrow; yesterday incomplete flagged
+  overdue, today and future not overdue.
+- HTML in a title rendered as literal text (not parsed).
+- Completing an overdue task removed `is-overdue`; reopening restored it.
+- Deleting removed the correct task and preserved remaining order.
+- After refresh, tasks, insertion order, completion, and overdue state all
+  survived from `localStorage`; deleting the last tasks restored the empty
+  state and stored `[]`.
+- No unexpected console errors or uncaught exceptions in any check.
+
+Robustness (real Chrome): malformed saved JSON loaded empty without crashing
+and accepted a valid add; mixed valid/invalid entries kept only the trimmed
+valid entry; with storage blocked the warning showed, add/complete/delete
+still worked in memory, and the warning returned after a validation message.
+
+Layout (real Chrome): at 320px and 1100px there was no horizontal overflow;
+the form and task card stack to one column on narrow screens; long unbroken
+titles wrap; focus shows a 3px outline; the completed strikethrough and the
+"✓ Completed"/"⚠ Overdue" badges render; the status legend is present.
+
+Limitations / not performed:
+- No manual human GUI pass on a physical device or real mobile browser; the
+  interactive and layout checks above were run in headless Chrome.
+- No cross-browser testing beyond Chromium.
+- No automated test runner was added; verification used focused headless
+  browser harnesses and worker suites (M3 29/29, M4 21/21, M5 34/34,
+  M6 15/15, M7 UI-worker checks).
+- Data remains local to the browser; clearing storage removes tasks.
